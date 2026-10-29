@@ -1,0 +1,21 @@
+{
+  "_comment": "Sud latifasi v2 picture (36.5 s): v1 plus a 2.25 s wide shot so the audience laughter can decay. fade_out is 0 here because mix_sfx.py applies the final fade after adding the laughter. Use with --save-bed.",
+  "settings": {
+    "fps": 24, "width": 720, "height": 1280,
+    "crf": 18, "preset": "slow",
+    "crossfade": 0.05, "fade_out": 0.0,
+    "audio_bitrate": "192k", "sample_rate": 48000
+  },
+  "segments": [
+    {"v": "01_sudya_va_ablah.mp4", "vs": 0.583, "ve": 5.542},
+    {"v": "01_sudya_va_ablah.mp4", "vs": 6.542, "ve": 8.292},
+    {"v": "01_sudya_va_ablah.mp4", "vs": 9.250, "ve": 10.000},
+    {"v": "02_qaynona_va_iflos.mp4", "vs": 0.417, "ve": 6.208},
+    {"v": "02_qaynona_va_iflos.mp4", "vs": 6.958, "ve": 8.750},
+    {"v": "03_sudya_ogohlantirishi.mp4", "vs": 0.458, "ve": 7.958},
+    {"v": "04_bolta_hazili.mp4", "vs": 0.458, "ve": 8.500, "gain_db": 2},
+    {"v": "04_bolta_hazili.mp4", "vs": 8.500, "ve": 9.125, "a": "01_sudya_va_ablah.mp4", "as": 8.0},
+    {"v": "05_final_reaksiya.mp4", "vs": 2.917, "ve": 5.958, "a": "02_qaynona_va_iflos.mp4", "as": 4.35},
+    {"v": "05_final_reaksiya.mp4", "vs": 5.958, "ve": 8.208, "a": "02_qaynona_va_iflos.mp4", "as": 4.35, "_": "wide shot added for the laughter tail"}
+  ]
+}

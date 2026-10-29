@@ -1,0 +1,20 @@
+{
+  "_comment": "Sud latifasi v1 master (34.25 s). Media paths are relative to --root (the folder with the five source clips). Cut points are snapped to the 24 fps grid by build_cut.py.",
+  "settings": {
+    "fps": 24, "width": 720, "height": 1280,
+    "crf": 18, "preset": "slow",
+    "crossfade": 0.05, "fade_out": 0.5,
+    "audio_bitrate": "192k", "sample_rate": 48000
+  },
+  "segments": [
+    {"v": "01_sudya_va_ablah.mp4", "vs": 0.583, "ve": 5.542, "_": "judge reads charge 1, gavel"},
+    {"v": "01_sudya_va_ablah.mp4", "vs": 6.542, "ve": 8.292, "_": "neighbour: ABLAH!"},
+    {"v": "01_sudya_va_ablah.mp4", "vs": 9.250, "ve": 10.000, "_": "judge gavel"},
+    {"v": "02_qaynona_va_iflos.mp4", "vs": 0.417, "ve": 6.208, "_": "charge 2 + defendant reaction"},
+    {"v": "02_qaynona_va_iflos.mp4", "vs": 6.958, "ve": 8.750, "_": "neighbour: IFLOS!"},
+    {"v": "03_sudya_ogohlantirishi.mp4", "vs": 0.458, "ve": 7.958, "_": "judge warns the neighbour (music tail dropped)"},
+    {"v": "04_bolta_hazili.mp4", "vs": 0.458, "ve": 8.500, "gain_db": 2, "_": "the axe punchline, +2 dB"},
+    {"v": "04_bolta_hazili.mp4", "vs": 8.500, "ve": 9.125, "a": "01_sudya_va_ablah.mp4", "as": 8.0, "_": "judge stunned; room tone replaces music pad"},
+    {"v": "05_final_reaksiya.mp4", "vs": 2.917, "ve": 5.958, "a": "02_qaynona_va_iflos.mp4", "as": 4.35, "_": "defendant smiles; room tone"}
+  ]
+}

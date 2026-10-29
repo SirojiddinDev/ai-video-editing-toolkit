@@ -1,0 +1,18 @@
+{
+  "_comment": "Minimal sound-effect layering template for mix_sfx.py. Times are seconds in the FINAL timeline.",
+  "bed": "out/cut.mp4",
+  "sample_rate": 48000,
+  "sfx_root": "../audio/sfx",
+  "layers": [
+    {"file": "single_laugh.mp3", "parts": [[0.0, 2.0]], "at": 12.0, "rms_db": -27, "pan": -0.4,
+     "fade_in": 0.03, "fade_out": 0.5, "highpass": 140, "lowpass": 5500},
+    {"file": "crowd.mp3", "parts": [[1.0, 2.5], [8.0, 10.0]], "splice_xf": 0.25, "match_splice": true,
+     "at": 12.6, "rms_db": -26, "level_window": [0.5, 1.5], "fade_in": 0.6, "fade_out": 0.4,
+     "highpass": 120, "lowpass": 6500}
+  ],
+  "reverb": {"rt60": 1.0, "length": 1.8, "predelay_ms": 14, "wet_db": -7, "seed": 7},
+  "layers_trim_db": -2,
+  "fade_out": 0.4,
+  "out_wav": "out/cut_sfx.wav",
+  "out_video": "out/cut_sfx.mp4"
+}

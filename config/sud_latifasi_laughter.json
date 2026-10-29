@@ -1,0 +1,25 @@
+{
+  "_comment": "Courtroom laughter for sud latifasi v2. Paths are relative to --root = the AI-Video-Projects folder. The three SFX files come from Pixabay (see audio/README.md) and are NOT shipped in the repository: download them into toolkit/audio/sfx/ first.",
+  "bed": "sud-latifasi/output/cut_v2.bed.wav",
+  "video": "sud-latifasi/output/cut_v2.mp4",
+  "sample_rate": 48000,
+  "sfx_root": "toolkit/audio/sfx",
+  "layers": [
+    {"_": "one spectator starts chuckling as the defendant begins to smile (final 32.75 s)",
+     "file": "male_laughter_92404.mp3", "parts": [[0.15, 2.45]], "at": 32.75,
+     "rms_db": -27, "pan": -0.45, "fade_in": 0.03, "fade_out": 0.5, "highpass": 140, "lowpass": 5500},
+    {"_": "two or three men join on the right",
+     "file": "men_laughing_03_242216.mp3", "parts": [[0.12, 2.25]], "at": 33.15,
+     "rms_db": -28, "pan": 0.5, "fade_in": 0.08, "fade_out": 0.6, "highpass": 140, "lowpass": 5500},
+    {"_": "the hall joins: walla build (2.05-3.45 s) spliced onto its own natural decay (10.1-12.1 s)",
+     "file": "walla_82403.mp3", "parts": [[2.05, 3.45], [10.1, 12.1]], "splice_xf": 0.25,
+     "match_splice": true, "splice_drop_db": 1.5, "at": 33.35,
+     "rms_db": -26, "level_window": [0.6, 1.4], "fade_in": 0.6, "fade_out": 0.35,
+     "highpass": 120, "lowpass": 6500}
+  ],
+  "reverb": {"rt60": 1.0, "length": 1.8, "predelay_ms": 14, "wet_db": -7, "seed": 7},
+  "layers_trim_db": -2,
+  "fade_out": 0.4,
+  "out_wav": "sud-latifasi/output/mix_v2_rebuilt.wav",
+  "out_video": "sud-latifasi/output/final_sud_latifasi_v2_rebuilt.mp4"
+}

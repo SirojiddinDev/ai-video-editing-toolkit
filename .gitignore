@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Media and renders (never commit large binaries)
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.aac
+*.zip
+
+# Third-party sound effects (see audio/README.md)
+audio/sfx/*
+!audio/sfx/.gitkeep
+
+# Analysis and build output
+analysis/
+out/
+output/
+*.bed.wav
+*_sheet.png
+*_spec.png
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/

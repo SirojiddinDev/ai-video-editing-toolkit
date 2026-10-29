@@ -1,0 +1,9 @@
+{
+  "_comment": "Minimal EDL template. Copy, rename, and edit. Times are seconds in the SOURCE clip; paths are relative to --root.",
+  "settings": {"fps": 24, "width": 720, "height": 1280, "crf": 18, "preset": "slow", "crossfade": 0.05, "fade_out": 0.5},
+  "segments": [
+    {"v": "clip_a.mp4", "vs": 0.5, "ve": 4.0},
+    {"v": "clip_b.mp4", "vs": 1.0, "ve": 3.5, "gain_db": 1.5},
+    {"v": "clip_c.mp4", "vs": 2.0, "ve": 5.0, "a": "clip_a.mp4", "as": 6.0, "_": "picture from clip_c, room tone from clip_a"}
+  ]
+}

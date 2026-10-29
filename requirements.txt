@@ -1,0 +1,9 @@
+# Core (all scripts except transcribe.py)
+numpy>=1.24
+soundfile>=0.12
+
+# Optional: word-level timestamps for cut verification (CPU works; ~1.5 GB model download)
+# faster-whisper>=1.0
+
+# Not pip-installable: ffmpeg + ffprobe >= 5.0 on PATH (tested with 7.1.1)
+#   Windows 11:  winget install Gyan.FFmpeg
