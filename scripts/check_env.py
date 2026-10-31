@@ -14,7 +14,7 @@ import sys
 from common import utf8_console
 
 REQUIRED_PY = ["numpy", "soundfile"]
-OPTIONAL_PY = ["faster_whisper"]
+OPTIONAL_PY = ["scipy", "faster_whisper"]
 
 
 def version_of(exe: str) -> str | None:

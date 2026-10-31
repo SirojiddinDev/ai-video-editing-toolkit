@@ -1,0 +1,31 @@
+{
+  "_comment": "Media not in this repo. Paths are relative to the project folder (--root D:\\AI-Video-Projects\\qiz-kuyov-latifasi): source/ holds the originals, working/03_outro_916_crop.mp4 is the output of reframe_916.py with config/qiz_kuyov_shots_03_outro.json. Qiz-kuyov latifasi. intro -> dialog -> outro(9:16 smart crop). Cut 1: ep1 frame 183 (girl has turned to her parents) -> ep2 frame 6 (same pose, she finishes the turn; first word at 0.40 s). Cut 2: ep2 9.75 s (last word ends ~9.65 s) -> ep3 1.667 s (girl facing parents in the wide shot, turns at ~2.6 s). All dialogue kept; no music in any source.",
+  "settings": {
+    "fps": 24,
+    "width": 720,
+    "height": 1280,
+    "crf": 18,
+    "preset": "slow",
+    "crossfade": 0.05,
+    "fade_out": 0.5,
+    "audio_bitrate": "192k",
+    "sample_rate": 48000
+  },
+  "segments": [
+    {
+      "v": "source/01_intro.mp4",
+      "vs": 0.0,
+      "ve": 7.625
+    },
+    {
+      "v": "source/02_dialog.mp4",
+      "vs": 0.25,
+      "ve": 9.75
+    },
+    {
+      "v": "working/03_outro_916_crop.mp4",
+      "vs": 1.667,
+      "ve": 10.0
+    }
+  ]
+}

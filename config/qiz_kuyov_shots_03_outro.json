@@ -1,0 +1,7 @@
+{
+  "comment": "03_outro.mp4 1280x720 -> 720x1280. Shot 0: girl stands facing parents then walks to the BYD; crop follows her (motion track in ROI x 540..1120, parents excluded), clamped so the car + plate 01N404QB stay in frame. Shot 1: parents' reaction (father smiles, mother notices).",
+  "shots": [
+    {"t0": 0.0, "t1": 8.4, "mode": "track", "roi": [540, 1120], "cx_min": 700, "cx_max": 930, "smooth": 16, "max_speed": 150},
+    {"t0": 8.4, "t1": 10.1, "mode": "static", "cx": 318}
+  ]
+}

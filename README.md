@@ -23,6 +23,12 @@ repository packages.
   RMS-targeted levels, constant-power panning, splicing of a sample's natural build and
   decay, a synthetic room impulse response (configurable RT60), and a bit-for-bit copy of
   the video stream when muxing.
+* **Smart reframing 16:9 -> 9:16** (`reframe_916.py`): no stretching; the clip is split
+  into shots, each with a static crop, keyframed pan (smoothstep) or a motion-tracked pan
+  (motion centroid inside a region of interest, median + gaussian smoothing, pan-speed
+  limit, clamping so a car / sign stays in frame). Output keeps the source duration and
+  audio, so it drops straight into an EDL. A blurred-background fallback (`--mode blurbg`,
+  optional `--fg-aspect`) renders the alternative for side-by-side comparison.
 * **Loudness normalization** (`normalize_loudness.py`): two-pass linear `loudnorm` with
   an optional limiter for platform targets.
 * **Lossless audio replacement** (`mux_audio.py`) and an optional **ASR cross-check**
@@ -41,7 +47,8 @@ and encoding the picture.
 ## Tech stack
 
 Python 3.9+, numpy, soundfile, FFmpeg/FFprobe (libx264, aac, `silencedetect`, `astats`,
-`ebur128`, `showspectrumpic`, `select=scene`), optional faster-whisper.
+`ebur128`, `showspectrumpic`, `select=scene`), optional scipy (smoother reframing tracks)
+and faster-whisper.
 No GUI, no cloud, no API keys.
 
 ## Installation (Windows 11)
@@ -66,6 +73,10 @@ All scripts are plain files; run them with `python scripts/<name>.py --help`.
 ```powershell
 # What is in these clips? (writes analysis.json / analysis.md / PNGs)
 python scripts\analyze_clips.py clips\*.mp4 --out analysis --images
+
+# A 16:9 clip in a 9:16 edit? Reframe it first (shots: see config/qiz_kuyov_shots_03_outro.json)
+python scripts\reframe_916.py --in clips\wide.mp4 --out work\wide_916.mp4 --shots shots.json --save-curve work\curve.json
+python scripts\reframe_916.py --in clips\wide.mp4 --track-only --roi 540 1120      # just print the motion track
 
 # Cut them (EDL: see config/ and examples/example_edl.json)
 python scripts\build_cut.py --edl my_edl.json --root clips --out out\cut.mp4 --save-bed
@@ -94,19 +105,36 @@ python scripts\normalize_loudness.py --in out\final.mp4 --out out\final_-16lufs.
 `v`/`vs`/`ve` = picture source and in/out (seconds); `a`/`as` = take the audio from
 another file/time (room tone instead of a music tail); `gain_db` = per-segment level.
 
+### Reframing shots in one minute
+
+```json
+{"shots": [
+  {"t0": 0.0, "t1": 8.4,  "mode": "track",  "roi": [540, 1120], "cx_min": 700, "cx_max": 930,
+                            "smooth": 16, "max_speed": 150},
+  {"t0": 8.4, "t1": 10.1, "mode": "static", "cx": 318},
+  {"t0": 0.0, "t1": 0.0,  "mode": "keys",   "keys": [[0.0, 640], [2.0, 900]]}
+]}
+```
+
+`t0`/`t1` = shot range in source seconds (hard cut between shots); `cx` = crop centre in
+source pixels; `roi` = x range in which motion is measured (exclude static people, swaying
+trees); `cx_min`/`cx_max` clamp the pan; `max_speed` is in source px/s.
+
 ## How it works
 
 1. **Analyze**: ffmpeg filters are run once per clip and parsed into JSON. Cut candidates
    are the silences between sound regions and the detected shot boundaries.
-2. **Cut**: every in/out point is rounded to a frame. For each segment the audio is
+2. **Reframe** (only for clips whose aspect differs): the crop-centre curve is built per
+   shot, every frame is cropped in numpy and scaled with lanczos; audio is stream-copied.
+3. **Cut**: every in/out point is rounded to a frame. For each segment the audio is
    decoded (plus a 50 ms tail), the bed is assembled with triangular crossfades so that
    segment *i+1* starts exactly at the picture cut, and ffmpeg trims, conforms and
    concatenates the video, then muxes it with the bed.
-3. **Sweeten**: each SFX layer is band-limited, trimmed to the parts you want (a
+4. **Sweeten**: each SFX layer is band-limited, trimmed to the parts you want (a
    sample's natural rise and its natural decay can be spliced), leveled to an RMS target,
    faded, panned and placed; the sum goes through a synthetic hall IR and is added to the
    untouched dialogue bed. The video stream is copied, never re-encoded.
-4. **Verify**: ffprobe (duration, codec, frame count), `ebur128` (integrated loudness,
+5. **Verify**: ffprobe (duration, codec, frame count), `ebur128` (integrated loudness,
    true peak), scene-cut positions, and RMS envelopes printed around the edits.
 
 ## Sample project: "Sud latifasi" (courtroom joke)
@@ -128,12 +156,26 @@ Configs: `config/sud_latifasi_edl.json`, `config/sud_latifasi_edl_v2.json`,
 `config/sud_latifasi_laughter.json`. Full Uzbek report with every cut: the project folder's
 `reports/MONTAJ_HISOBOTI.txt`. Media files are not part of this repository.
 
+## Sample project 2: "Qiz-kuyov latifasi" (daughter, father, future son-in-law)
+
+Three 10-second AI clips -> one 25.5 s vertical short; the third clip was 16:9.
+
+* Two reframed shots inside the wide clip: a motion-tracked pan that follows the daughter
+  from her parents to the car (clamped so the car and its plate stay in frame), then a
+  static crop on the parents' reaction. A blurred-background fallback was rendered and
+  rejected: faces and the plate became too small.
+* Match cut between clips 1 and 2 on the same pose (frame 183 -> frame 6); first word
+  0.15 s after the cut, last word 0.10 s before the next one, measured on the final file.
+* No music in any source, no SFX added; natural ambience carried through 50 ms crossfades.
+
+Configs: `config/qiz_kuyov_shots_03_outro.json` (reframing), `config/qiz_kuyov_edl.json`.
+
 ## Repository layout
 
 ```
 toolkit/
-  scripts/        check_env, analyze_clips, build_cut, mix_sfx, mux_audio, normalize_loudness, transcribe, common
-  config/         EDLs and SFX config of the sample project
+  scripts/        check_env, analyze_clips, reframe_916, build_cut, mix_sfx, mux_audio, normalize_loudness, transcribe, common
+  config/         EDLs, SFX and reframing configs of the sample projects
   examples/       templates, walkthrough, PowerShell runner
   audio/          sfx/ (git-ignored third-party sounds) + sources and licenses
   requirements.txt, LICENSE (MIT), .gitignore
@@ -146,6 +188,9 @@ toolkit/
 * The room reverb is synthetic; swap in a measured IR for critical work.
 * `build_cut.py` re-encodes the picture once (libx264 CRF 18 by default); stream-copy
   cutting is not attempted because it is not frame-accurate.
+* `reframe_916.py` tracks *motion*, not people: pick the ROI so that only the subject moves
+  inside it, or use keyframes. A 9:16 crop of 1280x720 is upscaled 1.78x; fine for soft
+  AI footage, visible on sharp live action.
 * No subtitle tooling yet.
 
 ## License
